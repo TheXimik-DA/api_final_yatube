@@ -1,14 +1,17 @@
-from pathlib import Path
-
 from datetime import timedelta
+from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'hhz7l-ltdismtf@bzyz+rple7*s*w$jak%whj@(@u0eok^f9k4'
+
+SECRET_KEY = (
+    'django-insecure-g#7!6u^(wi0ak6x+wg_0h3jt%6s)ec+dvb!t+@uxhh(!ixzuh^'
+)
 
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -17,9 +20,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'api',
+    'rest_framework',
     'posts',
+    'djoser',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -34,12 +39,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'yatube_api.urls'
 
-TEMPLATES_DIR = BASE_DIR / 'templates'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -62,6 +65,7 @@ DATABASES = {
     }
 }
 
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -77,6 +81,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -87,14 +92,21 @@ USE_L10N = True
 
 USE_TZ = True
 
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = ((BASE_DIR / 'static/'),)
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=3),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
