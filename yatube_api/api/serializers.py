@@ -63,11 +63,7 @@ class FollowSerializer(serializers.ModelSerializer):
         ]
 
     def validate_following(self, value: str) -> str:
-        user = self.context.get('request').user
-        author = get_object_or_404(
-            User,
-            username=value,
-        )
-        if author == user:
-            raise serializers.ValidationError('Подписки на себя, невозможны')
+        if value == self.context['request'].user:
+            raise serializers.ValidationError(
+                'Подписки на себя, невозможны')
         return value

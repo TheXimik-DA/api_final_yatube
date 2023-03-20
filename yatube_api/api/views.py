@@ -63,8 +63,7 @@ class CommentViewSet(viewsets.ModelViewSet):
             Post,
             pk=post_id,
         )
-        comments_queryset = post.comments.all()
-        return comments_queryset
+        return post.comments.all()
 
 
 class FollowViewSet(CreateListRetrieveViewSet):
